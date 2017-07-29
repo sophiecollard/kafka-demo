@@ -18,8 +18,11 @@ object KafkaProducerDemo {
 
     val producer: Producer[String, String] = new KafkaProducer[String, String](properties)
 
-    val record: ProducerRecord[String, String] = new ProducerRecord[String, String]("first_topic", "3", "message from producer")
-    producer.send(record) // does not actually send the record, only marks it for sending with flush or linger.ms
+    (0 to 10).foreach { n =>
+      val record: ProducerRecord[String, String] = new ProducerRecord[String, String]("first_topic", s"$n", s"message $n")
+      producer.send(record) // does not actually send the record, only marks it for sending with flush or linger.ms
+    }
+
     producer.flush() // alternative to linger.ms property, sends all records marked for sending
 
     producer.close()
